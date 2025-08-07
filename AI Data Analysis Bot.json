@@ -1,0 +1,271 @@
+{
+  "name": "AI Data Analysis Bot",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -784,
+        -64
+      ],
+      "id": "5138e060-607b-4512-b02e-c7e6f7cfcb6c",
+      "name": "When chat message received",
+      "webhookId": "ac721150-790a-4d25-b806-aea945b195b9"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1oCh8Y-jYwj0xKo4mDt3RjuLb32x6jlA2K3cmTIq6q_o",
+          "mode": "list",
+          "cachedResultName": "spotify_history",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oCh8Y-jYwj0xKo4mDt3RjuLb32x6jlA2K3cmTIq6q_o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1044562302,
+          "mode": "list",
+          "cachedResultName": "spotify_history",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oCh8Y-jYwj0xKo4mDt3RjuLb32x6jlA2K3cmTIq6q_o/edit#gid=1044562302"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -528,
+        -64
+      ],
+      "id": "29a8eaa1-5126-4a74-80bb-1d6fec04ce91",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "8aekuB73mtBJdDJT",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        -64
+      ],
+      "id": "87869180-7d67-4a0a-b710-4523d94a1449",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "557d8465-4117-4ceb-bad6-91f7b44c3305",
+              "name": "columns",
+              "value": "={{ JSON.stringify(Object.keys($json.data[0])) }} ",
+              "type": "string"
+            },
+            {
+              "id": "db68f4f4-4c45-4ec4-8934-103fc982c19c",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -80,
+        -64
+      ],
+      "id": "8eaff8a4-eb5c-4ae8-a69b-7939c40b7ae4",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When chat message received').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "=You are a helpful Data Analyst Assistant who is skilled at working with Google Sheets. Your goal is to help the user understand the sheet that is specified. \nHere are the column names for the sheet: {{ $json.columns }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        192,
+        -64
+      ],
+      "id": "d09f0e94-ab28-48aa-a078-831d425242b4",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        160,
+        160
+      ],
+      "id": "fe2400cc-aa08-42e1-ac8f-e29e93223ead",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bjf2BBEBapszu7as",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').first().json.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        160
+      ],
+      "id": "526b4b09-6a36-4b6d-9de8-3dac308ce8c8",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1oCh8Y-jYwj0xKo4mDt3RjuLb32x6jlA2K3cmTIq6q_o",
+          "mode": "list",
+          "cachedResultName": "spotify_history",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oCh8Y-jYwj0xKo4mDt3RjuLb32x6jlA2K3cmTIq6q_o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1044562302,
+          "mode": "list",
+          "cachedResultName": "spotify_history",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oCh8Y-jYwj0xKo4mDt3RjuLb32x6jlA2K3cmTIq6q_o/edit#gid=1044562302"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        448,
+        160
+      ],
+      "id": "a6b6fea2-5c38-456d-a2cc-e4862d4f2af6",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "8aekuB73mtBJdDJT",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2484248e-8a33-45cf-82ad-8d2a3b8dc4ac",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4545f1d02214811a5faa0f01246d8c6d60e4378a4250235caacf167cfd71e13d"
+  },
+  "id": "I0xVIvbPj1oy56sz",
+  "tags": []
+}
