@@ -32,7 +32,7 @@ and receive real-time data-driven insights!
 
 ## 📸 Screenshot
 
-![n8n AI Workflow](AI Data Analysis Bot 1.png)
+[![n8n AI Workflow](AI Data Analysis Bot 1.png)](https://github.com/RiddhiMakwana301/AI-Data-Analysis-Bot/blob/main/AI%20Data%20Analysis%20Bot%201.png)
 
 ---
 
