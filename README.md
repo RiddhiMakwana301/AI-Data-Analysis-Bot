@@ -48,4 +48,4 @@ and receive real-time data-driven insights!
 
 1. **Clone the repo**  
 ```bash
-git clone [https://github.com/RiddhiMakwana301/ai-data-analysis-agent.git](https://github.com/RiddhiMakwana301/AI-Data-Analysis-Bot.git)
+git clone [[https://github.com/RiddhiMakwana301/ai-data-analysis-agent.git](https://github.com/RiddhiMakwana301/AI-Data-Analysis-Bot.git)](https://github.com/RiddhiMakwana301/AI-Data-Analysis-Bot/blob/main/README.md)
