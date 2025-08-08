@@ -39,7 +39,7 @@ and receive real-time data-driven insights!
 
 | File | Description |
 |------|-------------|
-| `n8n-workflow.json` | Exported n8n workflow you can import directly |
+| `AI Data Analysis Bot.json` | Exported n8n workflow you can import directly |
 | `AI Data Analysis Bot 1.png` | Visual of the n8n automation |
 
 ---
